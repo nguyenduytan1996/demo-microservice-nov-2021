@@ -1,0 +1,48 @@
+{
+    "configurations": [
+        {
+            "type": "java",
+            "name": "Service 1",
+            "request": "launch",
+            "cwd": "${workspaceFolder}",
+            "console": "internalConsole",
+            "mainClass": "com.test.service.ServiceApplication",
+            "projectName": "service-122",
+            "connect": {
+                "host": "localhost",
+                "port": 9001
+            },
+            "args": "--spring.profiles.active=local"
+        },
+        {
+            "type": "java",
+            "name": "Gateway",
+            "request": "launch",
+            "cwd": "${workspaceFolder}",
+            "console": "internalConsole",
+            "mainClass": "com.code.SpringGatewayApplication",
+            "projectName": "spring-gateway",
+            "args": ""
+        },
+        {
+            "type": "java",
+            "name": "Client",
+            "request": "launch",
+            "cwd": "${workspaceFolder}",
+            "console": "internalConsole",
+            "mainClass": "com.test.client.ClientApplication",
+            "projectName": "client",
+            "args": ""
+        },
+        {
+            "type": "java",
+            "name": "Discoveryser",
+            "request": "launch",
+            "cwd": "${workspaceFolder}",
+            "console": "internalConsole",
+            "mainClass": "com.test.discoveryserver.DiscoveryserverApplication",
+            "projectName": "discoveryser",
+            "args": ""
+        }
+    ]
+}
