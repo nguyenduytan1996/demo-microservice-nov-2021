@@ -21,6 +21,9 @@ public class ClientController {
 	@Autowired
 	private RestTemplateBuilder templateBuilder;
 
+	@Autowired
+	private RestTemplate restTemplate;
+
 	@GetMapping("/")
 	private String callService() {
 		InstanceInfo instance = client.getNextServerFromEureka("service", false);
@@ -31,15 +34,16 @@ public class ClientController {
 		return response.getBody();
 	}
 
-	@GetMapping("/callService")
-	private ResponseEntity<String> callService2() {
-		// ResponseEntity<String> responseEntity = new
-		// RestTemplate().getForEntity("http://localhost:9001/demo2", String.class);
-		// ResponseEntity<String> responseEntity = new
-		// RestTemplate().getForEntity("http://service/demo2", String.class);
-		ResponseEntity<String> responseEntity = new RestTemplate().getForEntity("http://localhost:9001/demo2",
-				String.class);
-		return responseEntity;
+	@GetMapping("/callService1")
+	private ResponseEntity<String> callService1() {
+		ResponseEntity<String> rsEntity = new RestTemplate().getForEntity("http://localhost:9001/demo2", String.class);
+		return rsEntity;
+	}
+
+	@GetMapping("/callService2")
+	private String callService2() {
+		String rsEntity = restTemplate.getForObject("http://service/demo2", String.class);
+		return rsEntity;
 	}
 
 	@GetMapping("/sayhi")
