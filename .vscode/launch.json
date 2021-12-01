@@ -2,20 +2,6 @@
     "configurations": [
         {
             "type": "java",
-            "name": "Service 1",
-            "request": "launch",
-            "cwd": "${workspaceFolder}",
-            "console": "internalConsole",
-            "mainClass": "com.test.service.ServiceApplication",
-            "projectName": "service-122",
-            "connect": {
-                "host": "localhost",
-                "port": 9001
-            },
-            "args": "--spring.profiles.active=local"
-        },
-        {
-            "type": "java",
             "name": "Gateway",
             "request": "launch",
             "cwd": "${workspaceFolder}",
@@ -41,7 +27,17 @@
             "cwd": "${workspaceFolder}",
             "console": "internalConsole",
             "mainClass": "com.test.discoveryserver.DiscoveryserverApplication",
-            "projectName": "discoveryser",
+            "projectName": "discoveryserver",
+            "args": ""
+        },
+        {
+            "type": "java",
+            "name": "Service",
+            "request": "launch",
+            "cwd": "${workspaceFolder}",
+            "console": "internalConsole",
+            "mainClass": "com.test.service.ServiceApplication",
+            "projectName": "service",
             "args": ""
         }
     ]

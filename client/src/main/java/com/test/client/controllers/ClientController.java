@@ -22,7 +22,7 @@ public class ClientController {
 	private RestTemplateBuilder templateBuilder;
 
 	@Autowired
-	private RestTemplate restTemplate;
+	private RestTemplate restTemplate2;
 
 	@GetMapping("/")
 	private String callService() {
@@ -36,14 +36,14 @@ public class ClientController {
 
 	@GetMapping("/callService1")
 	private ResponseEntity<String> callService1() {
-		ResponseEntity<String> rsEntity = new RestTemplate().getForEntity("http://localhost:9001/demo2", String.class);
+		ResponseEntity<String> rsEntity = new RestTemplate().getForEntity("http://localhost:9001/demo", String.class);
 		return rsEntity;
 	}
 
 	@GetMapping("/callService2")
-	private String callService2() {
-		String rsEntity = restTemplate.getForObject("http://service/demo2", String.class);
-		return rsEntity;
+	public String callService2() {
+		String string = restTemplate2.getForObject("http://service/demo", String.class);
+		return string;
 	}
 
 	@GetMapping("/sayhi")

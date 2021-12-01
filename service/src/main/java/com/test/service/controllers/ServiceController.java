@@ -17,8 +17,8 @@ public class ServiceController {
 		return "Hello from " + instance;
 	}
 
-	@GetMapping("/demo2")
+	@GetMapping("/demo")
 	private String demo2() {
-		return "Service demo 2 method";
+		return "Service demo method";
 	}
 }
