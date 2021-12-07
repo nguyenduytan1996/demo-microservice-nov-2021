@@ -18,7 +18,12 @@ public class ServiceController {
 	}
 
 	@GetMapping("/demo")
-	private String demo2() {
+	private String demo() {
 		return "Service demo method";
+	}
+
+	@GetMapping("/demo2")
+	private String demo2() {
+		return "Service demo - 2 - method";
 	}
 }
