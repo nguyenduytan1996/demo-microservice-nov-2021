@@ -5,10 +5,13 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.web.client.RestTemplateBuilder;
 import org.springframework.http.HttpMethod;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.client.RestTemplate;
+
+import io.github.resilience4j.circuitbreaker.annotation.CircuitBreaker;
 
 import reactor.core.publisher.Mono;
 
@@ -65,6 +68,32 @@ public class ClientController {
 	public Mono<String> callService3() {
 		logger.info("Client Controller - Call with balance");
 		return apiCall.getServiceBalance();
+	}
+
+	// ****************************************************************************************
+	@GetMapping("/callService4")
+	@CircuitBreaker(name = "DEMO", fallbackMethod = "callFallback")
+	public ResponseEntity<String> callService4() {
+		String response = restTemplate2.getForObject("http://service/callNotExistNe", String.class);
+		return new ResponseEntity<String>(response, HttpStatus.OK);
+	}
+
+	public ResponseEntity<String> callFallback(Exception e) {
+		return new ResponseEntity<String>("Item service/callNotExistNe is Khong Co", HttpStatus.OK);
+
+	}
+
+	// circuitBreakerDemo - Viet Lai Theo Cach Moi
+	@GetMapping("/callService5")
+	public ResponseEntity<String> callService5() {
+		return new ResponseEntity<String>(apiCall.circuitBreakerDemo("http://service/callNotExistNe"), HttpStatus.OK);
+	}
+
+	// CIRCUIT BREAKER + LOAD BALANCE
+	@GetMapping("/callService6")
+	public ResponseEntity<String> callService6() {
+		return new ResponseEntity<String>(apiCall.getServiceBalanceCircuitBreaker("http://service/demo9"),
+				HttpStatus.OK);
 	}
 
 	@GetMapping("/sayhi")

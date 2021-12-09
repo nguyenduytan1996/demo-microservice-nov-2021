@@ -1,11 +1,11 @@
 package com.test.client.services;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.cloud.client.loadbalancer.reactive.ReactorLoadBalancerExchangeFilterFunction;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 import org.springframework.web.reactive.function.client.WebClient;
 
+import io.github.resilience4j.circuitbreaker.annotation.CircuitBreaker;
 import reactor.core.publisher.Mono;
 
 @Service
@@ -13,13 +13,8 @@ public class ApiCall {
     @Autowired
     RestTemplate restTemplate;
 
-    // private static String serviceBaseURL = "localhost:8090/service";
-    private final WebClient.Builder loadBalancedWebClientBuilder;
-
-    public ApiCall(WebClient.Builder webClientBuilder,
-            ReactorLoadBalancerExchangeFilterFunction lbFunction) {
-        this.loadBalancedWebClientBuilder = webClientBuilder;
-    }
+    @Autowired
+    WebClient.Builder loadBalancedWebClientBuilder;
 
     // Call a service
     public String getService(String apiLink) {
@@ -33,4 +28,23 @@ public class ApiCall {
         return loadBalancedWebClientBuilder.build().get().uri("http://service/demo").retrieve()
                 .bodyToMono(String.class);
     }
+
+    // CIRCUIT BREAKER
+    @CircuitBreaker(name = "DEMO", fallbackMethod = "callFallback")
+    public String circuitBreakerDemo(String urlService) { // http://service/callNotExistNe
+        String response = restTemplate.getForObject(urlService, String.class);
+        return response;
+    }
+
+    public String callFallback(String urlService, Exception e) {
+        return urlService + " Item service/callNotExistNe is Khong Co";
+    }
+
+    // CIRCUIT BREAKER + LOAD BALANCE
+    @CircuitBreaker(name = "DEMO", fallbackMethod = "callFallback")
+    public String getServiceBalanceCircuitBreaker(String urlService) {
+        return loadBalancedWebClientBuilder.build().get().uri(urlService).retrieve()
+                .bodyToMono(String.class).block();
+    }
+
 }
